@@ -1,0 +1,278 @@
+.onboarding {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg-dark);
+}
+
+/* Header */
+.onboarding__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1rem 0.5rem;
+}
+
+.onboarding__back {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: var(--radius-full);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.onboarding__back:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.onboarding__progress-info {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+}
+
+.onboarding__spacer {
+    width: 2.5rem;
+}
+
+/* Progress Bar */
+.onboarding__progress {
+    height: 0.25rem;
+    margin: 1rem 1rem 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.onboarding__progress-fill {
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-slow);
+}
+
+/* Content */
+.onboarding__content {
+    flex: 1;
+    padding: 1.5rem;
+    padding-bottom: 7rem;
+    overflow-y: auto;
+}
+
+.onboarding__step {
+    display: flex;
+    flex-direction: column;
+}
+
+.onboarding__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+}
+
+.onboarding__subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.onboarding__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.onboarding__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.onboarding__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.onboarding__field-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.onboarding__field-header label {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.onboarding__field-header span {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.onboarding__field-label {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-left: 0.25rem;
+}
+
+/* Goal Options */
+.onboarding__goal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.goal-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background-color: var(--color-surface-dark);
+    border: 1px solid var(--color-border-dark);
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.goal-option:hover {
+    border-color: rgba(13, 242, 108, 0.3);
+}
+
+.goal-option--selected {
+    border-color: var(--color-primary);
+    border-width: 2px;
+    background: linear-gradient(135deg, var(--color-surface-dark) 0%, rgba(13, 242, 108, 0.05) 100%);
+}
+
+.goal-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.goal-option__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-full);
+    color: var(--color-text-muted);
+    transition: all var(--transition-normal);
+}
+
+.goal-option--selected .goal-option__icon {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.goal-option__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.goal-option__label {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.goal-option--selected .goal-option__label {
+    color: var(--color-primary);
+}
+
+.goal-option__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.goal-option__check {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-border-dark);
+    border-radius: var(--radius-full);
+    transition: all var(--transition-normal);
+}
+
+.goal-option__check .material-symbols-outlined {
+    font-size: 0.625rem;
+    font-weight: 700;
+    opacity: 0;
+    color: var(--color-bg-dark);
+}
+
+.goal-option--selected .goal-option__check {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.goal-option--selected .goal-option__check .material-symbols-outlined {
+    opacity: 1;
+}
+
+/* Select */
+.select-wrapper {
+    position: relative;
+}
+
+.select {
+    width: 100%;
+    height: 3.5rem;
+    padding: 0 3rem 0 1rem;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text-primary);
+    background-color: var(--color-surface-input);
+    border: 1px solid var(--color-border-dark);
+    border-radius: var(--radius-xl);
+    appearance: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.select:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 242, 108, 0.15);
+}
+
+.select-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-primary);
+    pointer-events: none;
+}
+
+/* CTA */
+.onboarding__cta {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 448px;
+    padding: 1rem 1.5rem;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, var(--color-bg-dark) 0%, var(--color-bg-dark) 60%, transparent 100%);
+}

@@ -1,0 +1,390 @@
+.dashboard {
+    min-height: 100dvh;
+    background-color: var(--color-bg-dark);
+    padding-bottom: 7rem;
+}
+
+/* Header */
+.dashboard__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 1.5rem 1rem;
+}
+
+.dashboard__greeting {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard__date {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.dashboard__title {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+}
+
+.dashboard__avatar {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+}
+
+.dashboard__avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 2px solid var(--color-bg-dark);
+    box-shadow: var(--shadow-card-dark);
+}
+
+.dashboard__avatar-badge {
+    position: absolute;
+    bottom: -0.25rem;
+    right: -0.25rem;
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-full);
+}
+
+.dashboard__avatar-badge .material-symbols-outlined {
+    font-size: 0.625rem;
+    color: var(--color-bg-dark);
+    font-weight: 700;
+}
+
+/* AI Tip */
+.dashboard__tip {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin: 0 1.5rem 2rem;
+    padding: 1rem;
+    background-color: var(--color-primary-light);
+    border: 1px solid rgba(13, 242, 108, 0.2);
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(8px);
+}
+
+.dashboard__tip-icon {
+    padding: 0.375rem;
+    background-color: var(--color-primary-medium);
+    border-radius: var(--radius-lg);
+    flex-shrink: 0;
+}
+
+.dashboard__tip-icon .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: var(--color-primary);
+    display: block;
+}
+
+.dashboard__tip p {
+    flex: 1;
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+}
+
+.dashboard__tip strong {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.dashboard__tip-close {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+    padding: 0;
+}
+
+.dashboard__tip-close:hover {
+    color: var(--color-text-primary);
+}
+
+.dashboard__tip-close .material-symbols-outlined {
+    font-size: 1.125rem;
+}
+
+/* Calories Card */
+.dashboard__calories {
+    position: relative;
+    margin: 0 1.5rem 2rem;
+    padding: 1.5rem;
+    background-color: var(--color-surface-dark);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-card-dark);
+    overflow: hidden;
+}
+
+.dashboard__calories-glow {
+    position: absolute;
+    top: -4rem;
+    right: -4rem;
+    width: 8rem;
+    height: 8rem;
+    background: rgba(13, 242, 108, 0.05);
+    border-radius: var(--radius-full);
+    filter: blur(50px);
+    pointer-events: none;
+}
+
+.dashboard__calories-content {
+    position: relative;
+    z-index: 1;
+}
+
+.dashboard__calories-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard__calories-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dashboard__calories-icon {
+    padding: 0.5rem;
+    background-color: var(--color-bg-dark);
+    border-radius: var(--radius-lg);
+}
+
+.dashboard__calories-icon .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: var(--color-primary);
+    display: block;
+}
+
+.dashboard__calories-label h3 {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+}
+
+.dashboard__calories-label span {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.dashboard__calories-values {
+    text-align: right;
+}
+
+.dashboard__calories-current {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 0.25rem;
+}
+
+.dashboard__calories-current .value {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+}
+
+.dashboard__calories-current .max {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+}
+
+.dashboard__calories-percentage {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    font-family: monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+}
+
+.dashboard__calories-bar {
+    height: 1.25rem;
+    padding: 0.25rem;
+    background-color: #111814;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.dashboard__calories-fill {
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-full);
+    box-shadow: 0 0 10px rgba(13, 242, 108, 0.4);
+    position: relative;
+}
+
+.dashboard__calories-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dashboard__calories-meals {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    padding: 0 0.25rem;
+}
+
+.dashboard__calories-meals span {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+}
+
+.dashboard__calories-meals span.active {
+    color: var(--color-text-primary);
+}
+
+/* Macros */
+.dashboard__macros {
+    padding: 0 1.5rem;
+}
+
+.dashboard__macros-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+}
+
+.dashboard__macros-badge {
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    padding: 0.25rem 0.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-full);
+}
+
+.dashboard__macros-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* Increased from 1rem for better spacing */
+}
+
+/* FAB (Floating Action Button) */
+.dashboard__fab {
+    position: absolute;
+    top: -1.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    border: 4px solid var(--color-bg-dark);
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 20px rgba(13, 242, 108, 0.3);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    z-index: 50;
+}
+
+.dashboard__fab:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 6px 24px rgba(13, 242, 108, 0.4);
+}
+
+.dashboard__fab:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+.dashboard__fab .material-symbols-outlined {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--color-bg-dark);
+}
+
+/* Bottom Navigation */
+.dashboard__nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 448px;
+    display: flex;
+    justify-content: space-around;
+    /* Changed from space-between */
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    background-color: rgba(16, 34, 23, 0.95);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--color-border-dark-subtle);
+    z-index: 40;
+}
+
+.dashboard__nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.dashboard__nav-item:hover {
+    color: var(--color-text-primary);
+}
+
+.dashboard__nav-item--active {
+    color: var(--color-primary);
+}
+
+.dashboard__nav-item .material-symbols-outlined {
+    font-size: 1.5rem;
+}
+
+.dashboard__nav-item span:last-child {
+    font-size: 0.625rem;
+    font-weight: 500;
+}
+
+.dashboard__nav-item--active span:last-child {
+    font-weight: 700;
+}
+
+.dashboard__nav-spacer {
+    width: 2rem;
+}

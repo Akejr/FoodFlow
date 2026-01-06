@@ -1,0 +1,137 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-family);
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ripple effect on click */
+.button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.button:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+.button:active:not(:disabled) {
+    transform: scale(0.96);
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Sizes */
+.button--sm {
+    height: 2.5rem;
+    padding: 0 1rem;
+    font-size: var(--font-size-sm);
+    border-radius: var(--radius-lg);
+}
+
+.button--md {
+    height: 3rem;
+    padding: 0 1.5rem;
+    font-size: var(--font-size-base);
+}
+
+.button--lg {
+    height: 3.5rem;
+    padding: 0 2rem;
+    font-size: var(--font-size-lg);
+}
+
+/* Variants */
+.button--primary {
+    background-color: var(--color-primary);
+    color: var(--color-bg-dark);
+    box-shadow: var(--shadow-primary);
+}
+
+.button--primary:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+.button--secondary {
+    background-color: var(--color-surface-dark);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-dark);
+}
+
+.button--secondary:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
+}
+
+.button--ghost {
+    background-color: transparent;
+    color: var(--color-text-secondary);
+}
+
+.button--ghost:hover:not(:disabled) {
+    color: var(--color-text-primary);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Full Width */
+.button--full {
+    width: 100%;
+}
+
+/* Loading */
+.button--loading .button__text {
+    opacity: 0;
+}
+
+.button__spinner {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Icon */
+.button__icon {
+    font-size: 1.25rem;
+    transition: transform var(--transition-fast);
+}
+
+.button:hover:not(:disabled) .button__icon {
+    transform: translateX(2px);
+}

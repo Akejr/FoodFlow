@@ -1,0 +1,75 @@
+.radio-card-group {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.radio-card-group--cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.radio-card-group--cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.radio-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 0.5rem;
+    background-color: var(--color-surface-dark);
+    border: 1px solid var(--color-border-dark);
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    min-height: 6rem;
+}
+
+.radio-card:hover {
+    border-color: rgba(13, 242, 108, 0.3);
+    background-color: rgba(13, 242, 108, 0.05);
+}
+
+.radio-card--checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.radio-card--checked .radio-card__icon,
+.radio-card--checked .radio-card__label {
+    color: var(--color-bg-dark);
+}
+
+.radio-card__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radio-card__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    text-align: center;
+}
+
+.radio-card__icon {
+    font-size: 1.75rem;
+    color: var(--color-text-primary);
+    transition: color var(--transition-normal);
+}
+
+.radio-card__label {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    transition: color var(--transition-normal);
+}
+
+.radio-card__description {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
