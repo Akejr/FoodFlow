@@ -1,3 +1,33 @@
+# 🗄️ Script SQL - FoodFlow Database
+
+## ⚠️ IMPORTANTE: Execute este script no Supabase SQL Editor
+
+**Link direto:** https://supabase.com/dashboard/project/lymtmskfptmrpmixfwgv/sql
+
+---
+
+## 📋 O que este script faz:
+
+1. ✅ Cria tabela `profiles` (usuários)
+2. ✅ Cria tabela `student_profiles` (dados físicos)
+3. ✅ Cria tabela `nutrition_goals` (metas nutricionais)
+4. ✅ Cria tabela `foods` (banco de alimentos)
+5. ✅ Cria tabela `meal_logs` (refeições registradas)
+6. ✅ Cria tabela `favorite_foods` (favoritos)
+7. ✅ Cria tabela `ai_tips` (dicas da IA)
+8. ✅ Cria tabela `user_streaks` (sequências de uso)
+9. ✅ Cria tabela `subscriptions` (assinaturas)
+10. ✅ Configura RLS (Row Level Security)
+11. ✅ Cria triggers automáticos
+12. ✅ Insere 15 alimentos básicos
+
+---
+
+## 🚀 SCRIPT COMPLETO
+
+Copie e cole tudo abaixo no Supabase SQL Editor:
+
+```sql
 -- ============================================
 -- FOODFLOW - SUPABASE DATABASE SCHEMA
 -- ============================================
@@ -35,7 +65,7 @@ CREATE TABLE student_profiles (
     goal TEXT CHECK (goal IN ('lose', 'maintain', 'gain')) NOT NULL,
     activity_level TEXT CHECK (activity_level IN ('sedentary', 'light', 'moderate', 'active', 'very_active')) NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
-   updated_at TIMESTAMPTZ DEFAULT NOW()
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- ============================================
@@ -185,10 +215,6 @@ CREATE POLICY "Trainers can view their students" ON profiles FOR SELECT
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE
     USING (auth.uid() = id);
 
-CREATE POLICY "Allow authenticated inserts" ON profiles FOR INSERT
-    TO authenticated
-    WITH CHECK (true);
-
 -- Student Profiles: User can manage own profile
 CREATE POLICY "Users can view own student profile" ON student_profiles FOR SELECT
     USING (user_id = auth.uid());
@@ -306,14 +332,14 @@ INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fa
 ('Aveia', 389, 17, 66, 7, FALSE),
 ('Iogurte Grego Natural', 59, 10, 3.6, 0.4, FALSE),
 ('Whey Protein (1 scoop)', 120, 24, 3, 1.5, FALSE),
-('Café Gelado (sem açúcar)', 2, 0, 0, 0, FALSE),
+('Café Preto (sem açúcar)', 2, 0, 0, 0, FALSE),
 ('Salmão Grelhado', 206, 22, 0, 13, FALSE),
 ('Brócolis Cozido', 35, 2.4, 7, 0.4, FALSE),
 ('Azeite de Oliva (1 colher)', 119, 0, 0, 13.5, FALSE),
 ('Pão Integral (1 fatia)', 69, 3.6, 11.6, 1.1, FALSE);
 
 -- ============================================
--- ANALYTICS VIEWS (Optional)
+-- ANALYTICS VIEWS
 -- ============================================
 
 -- Daily nutrition summary view
@@ -332,8 +358,25 @@ GROUP BY user_id, DATE(logged_at);
 -- ============================================
 -- DONE! 🎉
 -- ============================================
--- Next steps:
--- 1. Create Supabase Edge Functions for IA calculations
--- 2. Configure Gemini API credentials
--- 3. Setup InfinityPay webhooks
--- ============================================
+```
+
+---
+
+## ✅ Depois de executar:
+
+1. Vá em **Table Editor** no Supabase
+2. Você verá todas as tabelas criadas
+3. Vá em **Authentication** → faça seu primeiro cadastro pelo app
+4. Volte em **Table Editor** → `profiles` e `student_profiles` para ver os dados salvos
+
+---
+
+## 🔄 Quando houver alterações:
+
+**Sempre que eu fizer mudanças no banco de dados, vou te enviar:**
+
+1. ✅ Script completo atualizado (como este)
+2. ✅ Script apenas com as mudanças (ALTER TABLE, etc)
+3. ✅ Explicação do que mudou
+
+**Você sempre terá o script mais recente neste arquivo!**

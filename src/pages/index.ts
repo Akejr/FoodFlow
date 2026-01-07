@@ -1,4 +1,5 @@
 export { Welcome } from './Welcome/Welcome';
+export { Login } from './Login/Login';
 export { Onboarding } from './Onboarding/Onboarding';
 export { Goals } from './Goals/Goals';
 export { Dashboard } from './Dashboard/Dashboard';

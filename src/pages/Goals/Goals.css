@@ -5,6 +5,40 @@
     background-color: var(--color-bg-dark);
 }
 
+.goals__loading {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-lg);
+}
+
+.goals__error {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1rem;
+}
+
+.goals__error .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: #ef4444;
+    flex-shrink: 0;
+}
+
+.goals__error p {
+    font-size: var(--font-size-sm);
+    color: #fca5a5;
+    line-height: 1.4;
+}
+
 /* Header */
 .goals__header {
     display: flex;

@@ -1,0 +1,121 @@
+/* Dashboard Skeleton Loading Styles */
+
+.dashboard-skeleton {
+    min-height: 100dvh;
+    padding: 1.5rem;
+    padding-bottom: 6rem;
+    background-color: var(--color-bg-dark);
+}
+
+/* Header */
+.dashboard-skeleton__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-skeleton__greeting {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Calories Card */
+.dashboard-skeleton__calories {
+    background: var(--color-surface-dark);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--color-border-dark-subtle);
+}
+
+.dashboard-skeleton__calories-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.dashboard-skeleton__meals {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border-dark-subtle);
+}
+
+/* Macros */
+.dashboard-skeleton__macros {
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-skeleton__macros-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.dashboard-skeleton__macro-item {
+    background: var(--color-surface-dark);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--color-border-dark-subtle);
+}
+
+/* Nav */
+.dashboard-skeleton__nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 448px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    background: var(--color-surface-dark);
+    border-top: 1px solid var(--color-border-dark-subtle);
+}
+
+.dashboard-skeleton__nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Skeleton Base Styles */
+.skeleton {
+    background: linear-gradient(90deg,
+            var(--color-surface-dark-alt) 0%,
+            rgba(255, 255, 255, 0.08) 50%,
+            var(--color-surface-dark-alt) 100%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton--circle {
+    border-radius: 50%;
+}
+
+.skeleton--text {
+    height: 1rem;
+    border-radius: 4px;
+}
+
+.skeleton--title {
+    height: 1.5rem;
+    border-radius: 4px;
+}
+
+@keyframes skeletonShimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}

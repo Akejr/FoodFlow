@@ -1,44 +1,87 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppStore } from '../../stores/appStore';
+import { supabase } from '../../services/supabase';
 import { ProgressBar } from '../../components/ui';
+import { DashboardSkeleton } from './DashboardSkeleton';
+import type { MealLog } from '../../types';
 import './Dashboard.css';
 
-// Mock data - would come from store/API
-const mockData = {
-    user: {
-        name: 'Alex',
-        avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face'
-    },
-    date: new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'short' }),
-    goals: {
-        calories: 2200,
-        protein: 180,
-        carbs: 250,
-        fat: 60
-    },
-    consumed: {
-        calories: 1450,
-        protein: 110,
-        carbs: 200,
-        fat: 65
-    },
-    tip: {
-        text: 'Você está indo muito bem! Faltam <strong>15g de proteína</strong> para sua meta. Tente um iogurte grego!',
-        dismissible: true
-    }
-};
-
-export const Dashboard: React.FC = () => {
+export const Dashboard = () => {
     const navigate = useNavigate();
-    const [showTip, setShowTip] = React.useState(true);
+    const { user, nutritionGoals, streak } = useAppStore();
 
-    const { user, date, goals, consumed, tip } = mockData;
+    const [showTip, setShowTip] = useState(true);
+    const [consumed, setConsumed] = useState({
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fat: 0
+    });
+    const [loading, setLoading] = useState(true);
 
-    const caloriesPercentage = Math.round((consumed.calories / goals.calories) * 100);
+    const date = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'short' });
+
+    useEffect(() => {
+        loadTodayMeals();
+    }, []);
+
+    const loadTodayMeals = async () => {
+        try {
+            const { data: { user: authUser } } = await supabase.auth.getUser();
+            if (!authUser) {
+                setLoading(false);
+                return;
+            }
+
+            // Buscar refeições de hoje
+            const today = new Date().toISOString().split('T')[0];
+            const { data: meals } = await supabase
+                .from('meal_logs')
+                .select('*')
+                .eq('user_id', authUser.id)
+                .gte('logged_at', `${today}T00:00:00`)
+                .lte('logged_at', `${today}T23:59:59`);
+
+            if (meals && meals.length > 0) {
+                // Calcular totais
+                const totals = meals.reduce((acc: typeof consumed, meal: MealLog) => ({
+                    calories: acc.calories + meal.calories,
+                    protein: acc.protein + meal.protein,
+                    carbs: acc.carbs + meal.carbs,
+                    fat: acc.fat + meal.fat
+                }), { calories: 0, protein: 0, carbs: 0, fat: 0 });
+
+                setConsumed(totals);
+            }
+        } catch (error) {
+            console.error('Erro ao carregar refeições:', error);
+        }
+
+        // Sempre finalizar o loading
+        setLoading(false);
+    };
 
     const handleAddMeal = () => {
         navigate('/add-meal');
     };
+
+    // Calcular percentuais
+    const goals = {
+        calories: nutritionGoals?.calories || 2000,
+        protein: nutritionGoals?.proteinG || 150,
+        carbs: (nutritionGoals?.carbsMinG || 200),
+        fat: (nutritionGoals?.fatMinG || 50)
+    };
+
+    const caloriesPercentage = Math.min(Math.round((consumed.calories / goals.calories) * 100), 100);
+    const userName = user?.fullName?.split(' ')[0] || 'Usuário';
+    const userAvatar = user?.avatarUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face';
+
+    // Mostrar skeleton enquanto carrega
+    if (loading) {
+        return <DashboardSkeleton />;
+    }
 
     return (
         <div className="dashboard">
@@ -46,23 +89,26 @@ export const Dashboard: React.FC = () => {
             <header className="dashboard__header">
                 <div className="dashboard__greeting">
                     <span className="dashboard__date">{date}</span>
-                    <h1 className="dashboard__title">Olá, {user.name}</h1>
+                    <h1 className="dashboard__title">Olá, {userName}</h1>
                 </div>
                 <div className="dashboard__avatar">
-                    <img src={user.avatarUrl} alt={user.name} />
+                    <img src={userAvatar} alt={userName} />
                     <div className="dashboard__avatar-badge">
                         <span className="material-symbols-outlined">sync</span>
                     </div>
                 </div>
             </header>
 
-            {/* AI Tip */}
-            {showTip && (
+            {/* AI Tip - Removendo por enquanto */}
+            {showTip && consumed.calories > 0 && (
                 <div className="dashboard__tip">
                     <div className="dashboard__tip-icon">
                         <span className="material-symbols-outlined">auto_awesome</span>
                     </div>
-                    <p dangerouslySetInnerHTML={{ __html: tip.text }} />
+                    <p>
+                        Ótimo progresso! Você já consumiu <strong>{consumed.calories} kcal</strong> de {goals.calories} kcal.
+                        {consumed.calories < goals.calories * 0.5 && ' Continue assim!'}
+                    </p>
                     <button
                         className="dashboard__tip-close"
                         onClick={() => setShowTip(false)}

@@ -123,6 +123,8 @@ export interface TrainerStudent {
 
 // Onboarding Types
 export interface OnboardingData {
+    email: string;
+    password: string;
     fullName: string;
     age: number;
     sex: Sex;

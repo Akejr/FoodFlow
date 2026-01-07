@@ -1,45 +1,53 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppStore } from '../../stores/appStore';
+import { useAuth } from '../../contexts/AuthContext';
 import './Profile.css';
-
-// Mock data - would come from store/API
-const mockData = {
-    user: {
-        name: 'João Silva',
-        avatarUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&h=200&fit=crop&crop=face',
-        isPremium: true
-    },
-    physicalData: {
-        age: 22,
-        sex: 'Masculino',
-        height: 178,
-        weight: 76
-    },
-    goal: {
-        name: 'Hipertrofia Muscular',
-        description: 'Foco em ganho de massa magra e força.',
-        progress: 65,
-        weekCurrent: 4,
-        weekTotal: 12
-    },
-    activityLevel: {
-        name: 'Moderadamente Ativo',
-        description: '3-5x por semana'
-    }
-};
 
 export const Profile: React.FC = () => {
     const navigate = useNavigate();
-    const { user, physicalData, goal, activityLevel } = mockData;
+    const { user, studentProfile, nutritionGoals } = useAppStore();
+    const { signOut } = useAuth();
+
+    const handleLogout = async () => {
+        console.log('🔴 Logout button clicked');
+        try {
+            await signOut();
+            // Redirecionamento é automático via ProtectedRoute
+            console.log('✅ Logout complete, redirect will happen automatically');
+        } catch (error) {
+            console.error('Erro ao sair:', error);
+        }
+    };
+
+    // Formatar dados para exibição
+    const goalMap = {
+        'lose': 'Perder Peso',
+        'maintain': 'Manter Peso',
+        'gain': 'Ganhar Massa'
+    };
+
+    const activityMap = {
+        'sedentary': 'Sedentário',
+        'light': 'Levemente Ativo',
+        'moderate': 'Moderadamente Ativo',
+        'active': 'Muito Ativo',
+        'very_active': 'Extremamente Ativo'
+    };
 
     return (
         <div className="profile">
             {/* Header */}
             <header className="profile__header">
                 <h2 className="profile__title">Perfil</h2>
-                <button className="profile__settings-btn">
-                    <span className="material-symbols-outlined">settings</span>
-                </button>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                    <button className="profile__settings-btn" onClick={handleLogout} title="Sair">
+                        <span className="material-symbols-outlined">logout</span>
+                    </button>
+                    <button className="profile__settings-btn">
+                        <span className="material-symbols-outlined">settings</span>
+                    </button>
+                </div>
             </header>
 
             {/* Content */}
@@ -47,15 +55,17 @@ export const Profile: React.FC = () => {
                 {/* Profile Header */}
                 <div className="profile__user">
                     <div className="profile__avatar-wrapper">
-                        <img src={user.avatarUrl} alt={user.name} className="profile__avatar" />
+                        <img
+                            src={user?.avatarUrl || 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&h=200&fit=crop&crop=face'}
+                            alt={user?.fullName || 'Usuário'}
+                            className="profile__avatar"
+                        />
                         <div className="profile__avatar-badge">
                             <span className="material-symbols-outlined">auto_awesome</span>
                         </div>
                     </div>
-                    <h1 className="profile__name">{user.name}</h1>
-                    {user.isPremium && (
-                        <span className="profile__badge">Aluno Premium</span>
-                    )}
+                    <h1 className="profile__name">{user?.fullName || 'Usuário'}</h1>
+                    <span className="profile__badge">Aluno Gratuito</span>
                 </div>
 
                 {/* Physical Data */}
@@ -68,7 +78,7 @@ export const Profile: React.FC = () => {
                                 <p className="profile__stat-label">Idade</p>
                             </div>
                             <p className="profile__stat-value">
-                                {physicalData.age} <span className="profile__stat-unit">anos</span>
+                                {studentProfile?.age || '--'} <span className="profile__stat-unit">anos</span>
                             </p>
                         </div>
 
@@ -77,7 +87,9 @@ export const Profile: React.FC = () => {
                                 <span className="material-symbols-outlined">male</span>
                                 <p className="profile__stat-label">Sexo</p>
                             </div>
-                            <p className="profile__stat-value">Masc.</p>
+                            <p className="profile__stat-value">
+                                {studentProfile?.sex === 'male' ? 'Masc.' : studentProfile?.sex === 'female' ? 'Fem.' : 'Outro'}
+                            </p>
                         </div>
 
                         <div className="profile__stat">
@@ -86,7 +98,7 @@ export const Profile: React.FC = () => {
                                 <p className="profile__stat-label">Altura</p>
                             </div>
                             <p className="profile__stat-value">
-                                {physicalData.height} <span className="profile__stat-unit">cm</span>
+                                {studentProfile?.heightCm || '--'} <span className="profile__stat-unit">cm</span>
                             </p>
                         </div>
 
@@ -96,7 +108,7 @@ export const Profile: React.FC = () => {
                                 <p className="profile__stat-label">Peso</p>
                             </div>
                             <p className="profile__stat-value">
-                                {physicalData.weight} <span className="profile__stat-unit">kg</span>
+                                {studentProfile?.weightKg || '--'} <span className="profile__stat-unit">kg</span>
                             </p>
                         </div>
                     </div>
@@ -112,16 +124,11 @@ export const Profile: React.FC = () => {
                                 <span className="material-symbols-outlined">fitness_center</span>
                                 <p className="profile__goal-tag">Meu Objetivo</p>
                             </div>
-                            <h4 className="profile__goal-name">{goal.name}</h4>
-                            <p className="profile__goal-description">{goal.description}</p>
-                            <div className="profile__goal-progress">
-                                <div
-                                    className="profile__goal-progress-fill"
-                                    style={{ width: `${goal.progress}%` }}
-                                />
-                            </div>
-                            <p className="profile__goal-status">
-                                Plano em progresso: Semana {goal.weekCurrent}/{goal.weekTotal}
+                            <h4 className="profile__goal-name">
+                                {studentProfile?.goal ? goalMap[studentProfile.goal] : 'Definir Meta'}
+                            </h4>
+                            <p className="profile__goal-description">
+                                Meta calórica: {nutritionGoals?.calories || 0} kcal/dia
                             </p>
                         </div>
                     </div>
@@ -138,8 +145,9 @@ export const Profile: React.FC = () => {
                             </div>
                             <div className="profile__detail-info">
                                 <p className="profile__detail-label">Nível de Atividade</p>
-                                <p className="profile__detail-value">{activityLevel.name}</p>
-                                <p className="profile__detail-description">{activityLevel.description}</p>
+                                <p className="profile__detail-value">
+                                    {studentProfile?.activityLevel ? activityMap[studentProfile.activityLevel] : '--'}
+                                </p>
                             </div>
                         </div>
 
@@ -150,6 +158,17 @@ export const Profile: React.FC = () => {
                             </div>
                             <div className="profile__detail-info">
                                 <p className="profile__detail-value">Configurações do App</p>
+                            </div>
+                            <span className="material-symbols-outlined profile__detail-chevron">chevron_right</span>
+                        </button>
+
+                        {/* Logout Button (Second Option) */}
+                        <button className="profile__detail-item profile__detail-item--clickable" onClick={handleLogout}>
+                            <div className="profile__detail-icon profile__detail-icon--secondary" style={{ color: '#ef4444' }}>
+                                <span className="material-symbols-outlined">logout</span>
+                            </div>
+                            <div className="profile__detail-info">
+                                <p className="profile__detail-value" style={{ color: '#ef4444' }}>Sair da Conta</p>
                             </div>
                             <span className="material-symbols-outlined profile__detail-chevron">chevron_right</span>
                         </button>

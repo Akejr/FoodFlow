@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, RadioCardGroup, Select } from '../../components/ui';
 import { useAppStore } from '../../stores/appStore';
+import { supabase } from '../../services/supabase';
 
 import type { Sex, UserGoal, ActivityLevel } from '../../types';
 import './Onboarding.css';
@@ -32,6 +33,8 @@ export const Onboarding: React.FC = () => {
 
     const [formData, setFormData] = useState<{
         fullName: string;
+        email: string;
+        password: string;
         age: string;
         sex: string;
         heightCm: string;
@@ -40,6 +43,8 @@ export const Onboarding: React.FC = () => {
         activityLevel: string;
     }>({
         fullName: onboardingData.fullName || '',
+        email: '',
+        password: '',
         age: onboardingData.age?.toString() || '',
         sex: onboardingData.sex || '',
         heightCm: onboardingData.heightCm?.toString() || '',
@@ -47,6 +52,9 @@ export const Onboarding: React.FC = () => {
         goal: onboardingData.goal || '',
         activityLevel: onboardingData.activityLevel || ''
     });
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const totalSteps = 3;
 
@@ -65,6 +73,7 @@ export const Onboarding: React.FC = () => {
         if (onboardingStep < totalSteps - 1) {
             setOnboardingStep(onboardingStep + 1);
         } else {
+            // Ir para Goals SEM criar usuário ainda
             navigate('/goals');
         }
     };
@@ -72,9 +81,9 @@ export const Onboarding: React.FC = () => {
     const isStepValid = () => {
         switch (onboardingStep) {
             case 0:
-                return formData.fullName.trim() !== '' && formData.age !== '' && formData.sex !== '';
+                return formData.fullName.trim() !== '' && formData.email !== '' && formData.password.length >= 6;
             case 1:
-                return formData.heightCm !== '' && formData.weightKg !== '';
+                return formData.age !== '' && formData.sex !== '' && formData.heightCm !== '' && formData.weightKg !== '';
             case 2:
                 return formData.goal !== '' && formData.activityLevel !== '';
             default:
@@ -113,6 +122,13 @@ export const Onboarding: React.FC = () => {
                             Seu treinador usará essas informações para calibrar suas metas com IA.
                         </p>
 
+                        {error && (
+                            <div className="onboarding__error">
+                                <span className="material-symbols-outlined">error</span>
+                                <p>{error}</p>
+                            </div>
+                        )}
+
                         <div className="onboarding__form">
                             <Input
                                 label="Nome"
@@ -120,6 +136,24 @@ export const Onboarding: React.FC = () => {
                                 iconRight="person"
                                 value={formData.fullName}
                                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                            />
+
+                            <Input
+                                label="E-mail"
+                                type="email"
+                                placeholder="seu@email.com"
+                                iconRight="mail"
+                                value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            />
+
+                            <Input
+                                label="Senha"
+                                type="password"
+                                placeholder="Mínimo 6 caracteres"
+                                iconRight="lock"
+                                value={formData.password}
+                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             />
 
                             <Input
@@ -242,9 +276,9 @@ export const Onboarding: React.FC = () => {
                     size="lg"
                     icon={onboardingStep === totalSteps - 1 ? 'auto_awesome' : 'arrow_forward'}
                     onClick={handleNext}
-                    disabled={!isStepValid()}
+                    disabled={!isStepValid() || loading}
                 >
-                    {onboardingStep === totalSteps - 1 ? 'Calcular Objetivos' : 'Próximo'}
+                    {loading ? 'Criando conta...' : (onboardingStep === totalSteps - 1 ? 'Calcular Objetivos' : 'Próximo')}
                 </Button>
             </div>
         </div>

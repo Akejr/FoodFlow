@@ -1,30 +1,69 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Welcome, Onboarding, Goals, Dashboard, AddMeal, Tips, Profile, Diary } from './pages';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { PublicRoute } from './components/PublicRoute';
+import { Welcome, Login, Onboarding, Goals, Dashboard, AddMeal, Tips, Profile, Diary } from './pages';
 import './styles/index.css';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Welcome />} />
-        <Route path="/login" element={<Welcome />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes (only for non-authenticated) */}
+          <Route path="/" element={
+            <PublicRoute>
+              <Welcome />
+            </PublicRoute>
+          } />
+          <Route path="/login" element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } />
+          <Route path="/onboarding" element={
+            <PublicRoute>
+              <Onboarding />
+            </PublicRoute>
+          } />
+          <Route path="/goals" element={
+            <PublicRoute>
+              <Goals />
+            </PublicRoute>
+          } />
 
-        {/* Onboarding */}
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/goals" element={<Goals />} />
+          {/* Protected Routes */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/add-meal" element={
+            <ProtectedRoute>
+              <AddMeal />
+            </ProtectedRoute>
+          } />
+          <Route path="/tips" element={
+            <ProtectedRoute>
+              <Tips />
+            </ProtectedRoute>
+          } />
+          <Route path="/diary" element={
+            <ProtectedRoute>
+              <Diary />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
 
-        {/* Main App (would be protected in production) */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/add-meal" element={<AddMeal />} />
-        <Route path="/tips" element={<Tips />} />
-        <Route path="/diary" element={<Diary />} />
-        <Route path="/profile" element={<Profile />} />
-
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
