@@ -1,5 +1,4 @@
 import { useEffect, useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../stores/appStore';
 import { supabase } from '../../services/supabase';
 import { ProgressBar } from '../../components/ui';
@@ -9,7 +8,6 @@ import type { MealLog } from '../../types';
 import './Dashboard.css';
 
 export const Dashboard = () => {
-    const navigate = useNavigate();
     const {
         user,
         nutritionGoals,

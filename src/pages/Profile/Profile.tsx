@@ -1,12 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../stores/appStore';
 import { useAuth } from '../../contexts/AuthContext';
 import { BottomNav } from '../../components/BottomNav';
 import './Profile.css';
 
 export const Profile: React.FC = () => {
-    const navigate = useNavigate();
     const { user, studentProfile, nutritionGoals } = useAppStore();
     const { signOut } = useAuth();
 
