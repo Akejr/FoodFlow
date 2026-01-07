@@ -9,7 +9,7 @@ import './Dashboard.css';
 
 export const Dashboard = () => {
     const navigate = useNavigate();
-    const { user, nutritionGoals, streak } = useAppStore();
+    const { user, nutritionGoals } = useAppStore();
 
     const [showTip, setShowTip] = useState(true);
     const [consumed, setConsumed] = useState({

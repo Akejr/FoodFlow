@@ -93,7 +93,7 @@ function adjustCalories(tdee: number, goal: UserGoal, intensity: 'flexible' | 'b
 function calculateMacros(
     calories: number,
     weightKg: number,
-    sex: Sex,
+    _sex: Sex,
     goal: UserGoal,
     intensity: 'flexible' | 'balanced' | 'aggressive'
 ): { protein: number; carbs: number; fat: number } {

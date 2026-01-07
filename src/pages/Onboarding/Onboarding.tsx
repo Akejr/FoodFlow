@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, RadioCardGroup, Select } from '../../components/ui';
 import { useAppStore } from '../../stores/appStore';
-import { supabase } from '../../services/supabase';
 
 import type { Sex, UserGoal, ActivityLevel } from '../../types';
 import './Onboarding.css';
@@ -53,8 +52,8 @@ export const Onboarding: React.FC = () => {
         activityLevel: onboardingData.activityLevel || ''
     });
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [loading] = useState(false);
+    const [error] = useState('');
 
     const totalSteps = 3;
 

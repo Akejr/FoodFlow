@@ -178,7 +178,7 @@ export const Goals: React.FC = () => {
                 </div>
 
                 <div className="goals__plans">
-                    {plans.map((plan, index) => {
+                    {plans.map((plan) => {
                         const colorClass = `plan--${plan.name}`;
                         const isRecommended = plan.name === 'balanced';
 
