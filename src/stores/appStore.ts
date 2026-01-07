@@ -23,6 +23,13 @@ interface AppState {
 
     // Daily Data
     todayNutrition: DailyNutrition | null;
+    dashboardConsumed: { calories: number; protein: number; carbs: number; fat: number };
+    dashboardLoaded: boolean;
+
+    // Diary Cache
+    diaryLoaded: boolean;
+    cachedDiaryMeals: MealLog[];
+    cachedDiaryConsumed: { calories: number; protein: number; carbs: number; fat: number };
 
     // Engagement
     streak: UserStreak | null;
@@ -38,6 +45,10 @@ interface AppState {
     setStudentProfile: (profile: StudentProfile) => void;
     setNutritionGoals: (goals: NutritionGoals) => void;
     setTodayNutrition: (nutrition: DailyNutrition) => void;
+    setDashboardConsumed: (consumed: { calories: number; protein: number; carbs: number; fat: number }) => void;
+    setDashboardLoaded: (loaded: boolean) => void;
+    setDiaryLoaded: (loaded: boolean) => void;
+    setCachedDiaryData: (meals: MealLog[], consumed: { calories: number; protein: number; carbs: number; fat: number }) => void;
     addMealLog: (meal: MealLog) => void;
     setStreak: (streak: UserStreak) => void;
     setTips: (tips: AiTip[]) => void;
@@ -59,6 +70,11 @@ export const useAppStore = create<AppState>()(
             studentProfile: null,
             nutritionGoals: null,
             todayNutrition: null,
+            dashboardConsumed: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+            dashboardLoaded: false,
+            diaryLoaded: false,
+            cachedDiaryMeals: [],
+            cachedDiaryConsumed: { calories: 0, protein: 0, carbs: 0, fat: 0 },
             streak: null,
             tips: [],
             onboardingData: initialOnboardingData,
@@ -77,6 +93,18 @@ export const useAppStore = create<AppState>()(
             setNutritionGoals: (nutritionGoals) => set({ nutritionGoals }),
 
             setTodayNutrition: (todayNutrition) => set({ todayNutrition }),
+
+            setDashboardConsumed: (dashboardConsumed) => set({ dashboardConsumed, dashboardLoaded: true }),
+
+            setDashboardLoaded: (dashboardLoaded) => set({ dashboardLoaded }),
+
+            setDiaryLoaded: (diaryLoaded) => set({ diaryLoaded }),
+
+            setCachedDiaryData: (cachedDiaryMeals, cachedDiaryConsumed) => set({ 
+                cachedDiaryMeals, 
+                cachedDiaryConsumed, 
+                diaryLoaded: true 
+            }),
 
             addMealLog: (meal) => {
                 const { todayNutrition } = get();
@@ -128,6 +156,11 @@ export const useAppStore = create<AppState>()(
                 isAuthenticated: state.isAuthenticated,
                 studentProfile: state.studentProfile,
                 nutritionGoals: state.nutritionGoals,
+                dashboardConsumed: state.dashboardConsumed,
+                dashboardLoaded: state.dashboardLoaded,
+                diaryLoaded: state.diaryLoaded,
+                cachedDiaryMeals: state.cachedDiaryMeals,
+                cachedDiaryConsumed: state.cachedDiaryConsumed,
                 onboardingData: state.onboardingData,
                 onboardingStep: state.onboardingStep
             })

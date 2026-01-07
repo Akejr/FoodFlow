@@ -1,40 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../stores/appStore';
 import { supabase } from '../../services/supabase';
 import { ProgressBar } from '../../components/ui';
+import { BottomNav } from '../../components/BottomNav';
 import { DashboardSkeleton } from './DashboardSkeleton';
 import type { MealLog } from '../../types';
 import './Dashboard.css';
 
 export const Dashboard = () => {
     const navigate = useNavigate();
-    const { user, nutritionGoals } = useAppStore();
+    const {
+        user,
+        nutritionGoals,
+        dashboardConsumed,
+        dashboardLoaded,
+        setDashboardConsumed
+    } = useAppStore();
 
     const [showTip, setShowTip] = useState(true);
-    const [consumed, setConsumed] = useState({
-        calories: 0,
-        protein: 0,
-        carbs: 0,
-        fat: 0
-    });
-    const [loading, setLoading] = useState(true);
-
     const date = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'short' });
 
-    useEffect(() => {
-        loadTodayMeals();
-    }, []);
-
-    const loadTodayMeals = async () => {
+    const loadTodayMeals = useCallback(async () => {
         try {
             const { data: { user: authUser } } = await supabase.auth.getUser();
-            if (!authUser) {
-                setLoading(false);
-                return;
-            }
+            if (!authUser) return;
 
-            // Buscar refeições de hoje
             const today = new Date().toISOString().split('T')[0];
             const { data: meals } = await supabase
                 .from('meal_logs')
@@ -44,27 +35,33 @@ export const Dashboard = () => {
                 .lte('logged_at', `${today}T23:59:59`);
 
             if (meals && meals.length > 0) {
-                // Calcular totais
-                const totals = meals.reduce((acc: typeof consumed, meal: MealLog) => ({
+                const totals = meals.reduce((acc: typeof dashboardConsumed, meal: MealLog) => ({
                     calories: acc.calories + meal.calories,
                     protein: acc.protein + meal.protein,
                     carbs: acc.carbs + meal.carbs,
                     fat: acc.fat + meal.fat
                 }), { calories: 0, protein: 0, carbs: 0, fat: 0 });
 
-                setConsumed(totals);
+                setDashboardConsumed(totals);
+            } else {
+                setDashboardConsumed({ calories: 0, protein: 0, carbs: 0, fat: 0 });
             }
         } catch (error) {
             console.error('Erro ao carregar refeições:', error);
+            if (!dashboardLoaded) {
+                setDashboardConsumed({ calories: 0, protein: 0, carbs: 0, fat: 0 });
+            }
         }
+    }, [setDashboardConsumed, dashboardLoaded]);
 
-        // Sempre finalizar o loading
-        setLoading(false);
-    };
+    useEffect(() => {
+        loadTodayMeals();
+    }, [loadTodayMeals]);
 
-    const handleAddMeal = () => {
-        navigate('/add-meal');
-    };
+    // Só mostra skeleton na primeira vez
+    if (!dashboardLoaded) {
+        return <DashboardSkeleton />;
+    }
 
     // Calcular percentuais
     const goals = {
@@ -74,14 +71,9 @@ export const Dashboard = () => {
         fat: (nutritionGoals?.fatMinG || 50)
     };
 
-    const caloriesPercentage = Math.min(Math.round((consumed.calories / goals.calories) * 100), 100);
+    const caloriesPercentage = Math.min(Math.round((dashboardConsumed.calories / goals.calories) * 100), 100);
     const userName = user?.fullName?.split(' ')[0] || 'Usuário';
     const userAvatar = user?.avatarUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face';
-
-    // Mostrar skeleton enquanto carrega
-    if (loading) {
-        return <DashboardSkeleton />;
-    }
 
     return (
         <div className="dashboard">
@@ -99,15 +91,15 @@ export const Dashboard = () => {
                 </div>
             </header>
 
-            {/* AI Tip - Removendo por enquanto */}
-            {showTip && consumed.calories > 0 && (
+            {/* AI Tip */}
+            {showTip && dashboardConsumed.calories > 0 && (
                 <div className="dashboard__tip">
                     <div className="dashboard__tip-icon">
                         <span className="material-symbols-outlined">auto_awesome</span>
                     </div>
                     <p>
-                        Ótimo progresso! Você já consumiu <strong>{consumed.calories} kcal</strong> de {goals.calories} kcal.
-                        {consumed.calories < goals.calories * 0.5 && ' Continue assim!'}
+                        Ótimo progresso! Você já consumiu <strong>{dashboardConsumed.calories} kcal</strong> de {goals.calories} kcal.
+                        {dashboardConsumed.calories < goals.calories * 0.5 && ' Continue assim!'}
                     </p>
                     <button
                         className="dashboard__tip-close"
@@ -134,7 +126,7 @@ export const Dashboard = () => {
                         </div>
                         <div className="dashboard__calories-values">
                             <div className="dashboard__calories-current">
-                                <span className="value">{consumed.calories.toLocaleString('pt-BR')}</span>
+                                <span className="value">{dashboardConsumed.calories.toLocaleString('pt-BR')}</span>
                                 <span className="max">/ {goals.calories.toLocaleString('pt-BR')}</span>
                             </div>
                             <span className="dashboard__calories-percentage">{caloriesPercentage}% Consumido</span>
@@ -165,57 +157,34 @@ export const Dashboard = () => {
 
                 <div className="dashboard__macros-list">
                     <ProgressBar
-                        value={consumed.protein}
+                        value={dashboardConsumed.protein}
                         max={goals.protein}
                         label="Proteínas"
-                        sublabel={`${goals.protein - consumed.protein}g restantes`}
+                        sublabel={`${Math.max(0, goals.protein - dashboardConsumed.protein)}g restantes`}
                         icon="egg_alt"
                     />
 
                     <ProgressBar
-                        value={consumed.carbs}
+                        value={dashboardConsumed.carbs}
                         max={goals.carbs}
                         label="Carboidratos"
-                        sublabel={`${goals.carbs - consumed.carbs}g restantes`}
+                        sublabel={`${Math.max(0, goals.carbs - dashboardConsumed.carbs)}g restantes`}
                         icon="bakery_dining"
                     />
 
                     <ProgressBar
-                        value={consumed.fat}
+                        value={dashboardConsumed.fat}
                         max={goals.fat}
                         label="Gorduras"
                         sublabel=""
                         icon="water_drop"
-                        exceeded={consumed.fat > goals.fat}
+                        exceeded={dashboardConsumed.fat > goals.fat}
                     />
                 </div>
             </section>
 
-            {/* Bottom Navigation with FAB */}
-            <nav className="dashboard__nav">
-                <button className="dashboard__nav-item dashboard__nav-item--active">
-                    <span className="material-symbols-outlined">dashboard</span>
-                    <span>Início</span>
-                </button>
-                <button className="dashboard__nav-item" onClick={() => navigate('/diary')}>
-                    <span className="material-symbols-outlined">restaurant_menu</span>
-                    <span>Diário</span>
-                </button>
-
-                {/* FAB Central */}
-                <button className="dashboard__fab" onClick={handleAddMeal}>
-                    <span className="material-symbols-outlined">add</span>
-                </button>
-
-                <button className="dashboard__nav-item" onClick={() => navigate('/tips')}>
-                    <span className="material-symbols-outlined">insights</span>
-                    <span>Dicas IA</span>
-                </button>
-                <button className="dashboard__nav-item" onClick={() => navigate('/profile')}>
-                    <span className="material-symbols-outlined">person</span>
-                    <span>Perfil</span>
-                </button>
-            </nav>
+            {/* Bottom Navigation */}
+            <BottomNav />
         </div>
     );
 };

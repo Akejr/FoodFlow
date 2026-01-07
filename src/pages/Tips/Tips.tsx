@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BottomNav } from '../../components/BottomNav';
 import './Tips.css';
 
 const mockData = {
@@ -140,27 +141,7 @@ export const Tips: React.FC = () => {
             </main>
 
             {/* Bottom Navigation */}
-            <nav className="tips__nav">
-                <button className="tips__nav-item" onClick={() => navigate('/dashboard')}>
-                    <span className="material-symbols-outlined">dashboard</span>
-                    <span>Início</span>
-                </button>
-                <button className="tips__nav-item" onClick={() => navigate('/diary')}>
-                    <span className="material-symbols-outlined">restaurant_menu</span>
-                    <span>Diário</span>
-                </button>
-                <button className="tips__fab" onClick={() => navigate('/add-meal')}>
-                    <span className="material-symbols-outlined">add</span>
-                </button>
-                <button className="tips__nav-item tips__nav-item--active">
-                    <span className="material-symbols-outlined filled">insights</span>
-                    <span>Dicas IA</span>
-                </button>
-                <button className="tips__nav-item" onClick={() => navigate('/profile')}>
-                    <span className="material-symbols-outlined">person</span>
-                    <span>Perfil</span>
-                </button>
-            </nav>
+            <BottomNav />
         </div>
     );
 };

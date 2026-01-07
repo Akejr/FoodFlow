@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../stores/appStore';
 import { useAuth } from '../../contexts/AuthContext';
+import { BottomNav } from '../../components/BottomNav';
 import './Profile.css';
 
 export const Profile: React.FC = () => {
@@ -176,31 +177,8 @@ export const Profile: React.FC = () => {
                 </section>
             </main>
 
-            {/* Bottom Navigation with FAB */}
-            <nav className="profile__nav">
-                <button className="profile__nav-item" onClick={() => navigate('/dashboard')}>
-                    <span className="material-symbols-outlined">dashboard</span>
-                    <span>Início</span>
-                </button>
-                <button className="profile__nav-item" onClick={() => navigate('/diary')}>
-                    <span className="material-symbols-outlined">restaurant_menu</span>
-                    <span>Diário</span>
-                </button>
-
-                {/* FAB Central */}
-                <button className="profile__fab" onClick={() => navigate('/add-meal')}>
-                    <span className="material-symbols-outlined">add</span>
-                </button>
-
-                <button className="profile__nav-item" onClick={() => navigate('/tips')}>
-                    <span className="material-symbols-outlined">insights</span>
-                    <span>Dicas IA</span>
-                </button>
-                <button className="profile__nav-item profile__nav-item--active">
-                    <span className="material-symbols-outlined filled">person</span>
-                    <span>Perfil</span>
-                </button>
-            </nav>
+            {/* Bottom Navigation */}
+            <BottomNav />
         </div>
     );
 };

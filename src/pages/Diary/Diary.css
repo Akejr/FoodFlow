@@ -340,12 +340,155 @@
     object-fit: cover;
 }
 
+/* AI Insight Card */
+.diary__ai-card {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #1a3828 0%, #102217 100%);
+    border: 1px solid rgba(13, 242, 108, 0.2);
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+}
+
+.diary__ai-glow {
+    position: absolute;
+    top: -2.5rem;
+    right: -2.5rem;
+    width: 8rem;
+    height: 8rem;
+    background-color: rgba(13, 242, 108, 0.1);
+    border-radius: var(--radius-full);
+    filter: blur(50px);
+    pointer-events: none;
+}
+
+.diary__ai-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.diary__ai-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.diary__ai-header .material-symbols-outlined {
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+}
+
+.diary__ai-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+}
+
+.diary__ai-title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.diary__ai-description {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.diary__ai-loading {
+    padding: 0.5rem 0;
+}
+
+.diary__ai-loading p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+.diary__ai-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.diary__ai-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+.diary__ai-tip .material-symbols-outlined {
+    font-size: 1rem;
+    color: #fbbf24;
+    flex-shrink: 0;
+}
+
 /* Meals Header */
 .diary__meals-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-top: 0.5rem;
+}
+
+/* Error State */
+.diary__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 2rem;
+    background-color: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-2xl);
+    text-align: center;
+}
+
+.diary__error .material-symbols-outlined {
+    font-size: 3rem;
+    color: #ef4444;
+}
+
+.diary__error p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+}
+
+.diary__retry-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-xl);
+    color: var(--color-bg-dark);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.diary__retry-btn:hover {
+    background-color: #0be063;
+    transform: scale(1.02);
 }
 
 .diary__meals-title {
@@ -430,6 +573,11 @@
 .diary__meal-icon--purple {
     background-color: rgba(168, 85, 247, 0.2);
     color: #a855f7;
+}
+
+.diary__meal-icon--blue {
+    background-color: rgba(96, 165, 250, 0.2);
+    color: #60a5fa;
 }
 
 .diary__meal-name {
@@ -645,4 +793,335 @@
 
 .diary__nav-item--active span:last-child {
     font-weight: 700;
+}
+
+/* Empty State */
+.diary__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, var(--color-surface-dark) 0%, rgba(13, 242, 108, 0.03) 100%);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-2xl);
+    text-align: center;
+}
+
+.diary__empty .material-symbols-outlined {
+    font-size: 3rem;
+    color: var(--color-primary);
+    opacity: 0.5;
+}
+
+.diary__empty p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+}
+
+.diary__empty-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-xl);
+    color: var(--color-bg-dark);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.diary__empty-btn:hover {
+    background-color: #0be063;
+    transform: scale(1.02);
+}
+
+/* Loading State */
+.diary__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.diary__loading-spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 3px solid rgba(13, 242, 108, 0.2);
+    border-top-color: var(--color-primary);
+    border-radius: var(--radius-full);
+    animation: spin 1s linear infinite;
+}
+
+.diary__loading p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+}
+
+/* Error State */
+.diary__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 2rem;
+    background-color: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-2xl);
+    text-align: center;
+}
+
+.diary__error .material-symbols-outlined {
+    font-size: 3rem;
+    color: var(--color-error);
+}
+
+.diary__error p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+}
+
+.diary__retry-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-xl);
+    color: var(--color-bg-dark);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.diary__retry-btn:hover {
+    background-color: #0be063;
+    transform: scale(1.02);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Food Actions & Delete */
+.diary__food-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.diary__food-delete {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+}
+
+.diary__food-delete:hover {
+    color: var(--color-error);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.diary__food-delete .material-symbols-outlined {
+    font-size: 1.125rem;
+}
+
+.diary__food-delete:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.diary__food-delete:disabled .material-symbols-outlined {
+    animation: spin 1s linear infinite;
+}
+
+/* ========================================
+   DIARY SKELETON STYLES
+   ======================================== */
+
+.diary-skeleton {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0f0d 0%, #1a1f1d 100%);
+    padding-bottom: 80px;
+}
+
+.diary-skeleton__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.25rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.diary-skeleton__date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.diary-skeleton__content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.diary-skeleton__calories {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.diary-skeleton__calories-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.diary-skeleton__calories-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.diary-skeleton__macros {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.diary-skeleton__macro-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.diary-skeleton__meals-header {
+    padding: 0.5rem 0;
+}
+
+.diary-skeleton__meals {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.diary-skeleton__meal {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.diary-skeleton__meal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.diary-skeleton__meal-foods {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.diary-skeleton__food-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.diary-skeleton__meal-macros {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.diary-skeleton__nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(10, 15, 13, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 100;
+}
+
+.diary-skeleton__nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Skeleton Animation */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+    border-radius: 0.5rem;
+}
+
+.skeleton--circle {
+    border-radius: 50%;
+}
+
+.skeleton--text {
+    height: 14px;
+    border-radius: 0.25rem;
+}
+
+.skeleton--title {
+    height: 20px;
+    border-radius: 0.375rem;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }

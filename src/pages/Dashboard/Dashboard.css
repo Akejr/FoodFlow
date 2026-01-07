@@ -226,14 +226,37 @@
     background-color: #111814;
     border-radius: var(--radius-full);
     overflow: hidden;
+    position: relative;
 }
 
 .dashboard__calories-fill {
     height: 100%;
-    background-color: var(--color-primary);
+    background: linear-gradient(90deg,
+            var(--color-primary) 0%,
+            #0be063 50%,
+            var(--color-primary) 100%);
+    background-size: 200% 100%;
     border-radius: var(--radius-full);
-    box-shadow: 0 0 10px rgba(13, 242, 108, 0.4);
+    box-shadow:
+        0 0 10px rgba(13, 242, 108, 0.4),
+        0 0 20px rgba(13, 242, 108, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     position: relative;
+    animation: glow-pulse 2s ease-in-out infinite, gradient-shift 3s ease infinite;
+    transition: width 0.5s ease-out;
+}
+
+.dashboard__calories-fill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.3) 0%,
+            transparent 100%);
+    border-radius: var(--radius-full) var(--radius-full) 0 0;
 }
 
 .dashboard__calories-fill::after {
@@ -242,8 +265,54 @@
     right: 0;
     top: 0;
     bottom: 0;
-    width: 2px;
-    background-color: rgba(255, 255, 255, 0.2);
+    width: 4px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 0 var(--radius-full) var(--radius-full) 0;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 10px rgba(13, 242, 108, 0.4),
+            0 0 20px rgba(13, 242, 108, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    50% {
+        box-shadow:
+            0 0 20px rgba(13, 242, 108, 0.6),
+            0 0 40px rgba(13, 242, 108, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes shimmer {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
 }
 
 .dashboard__calories-meals {

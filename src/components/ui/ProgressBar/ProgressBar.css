@@ -87,22 +87,72 @@
     background-color: #111814;
     border-radius: var(--radius-full);
     overflow: hidden;
+    position: relative;
 }
 
 .progress-fill {
     height: 100%;
-    background-color: var(--color-primary);
+    background: linear-gradient(90deg,
+            var(--color-primary) 0%,
+            #22f880 50%,
+            var(--color-primary) 100%);
+    background-size: 200% 100%;
     border-radius: var(--radius-full);
     transition: width var(--transition-slow);
+    box-shadow: 0 0 8px rgba(13, 242, 108, 0.4);
+    animation: macro-glow 3s ease-in-out infinite;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.25) 0%,
+            transparent 50%);
+    border-radius: var(--radius-full);
 }
 
 .progress-fill--exceeded {
-    background-color: var(--color-error);
-    background-image: repeating-linear-gradient(45deg,
-            transparent,
-            transparent 5px,
-            rgba(255, 255, 255, 0.1) 5px,
-            rgba(255, 255, 255, 0.1) 10px);
+    background: linear-gradient(90deg,
+            var(--color-error) 0%,
+            #ff6b6b 50%,
+            var(--color-error) 100%);
+    background-size: 200% 100%;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+    animation: macro-glow-error 3s ease-in-out infinite;
+}
+
+@keyframes macro-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 8px rgba(13, 242, 108, 0.4);
+        background-position: 0% 50%;
+    }
+
+    50% {
+        box-shadow: 0 0 15px rgba(13, 242, 108, 0.6);
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes macro-glow-error {
+
+    0%,
+    100% {
+        box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+        background-position: 0% 50%;
+    }
+
+    50% {
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+        background-position: 100% 50%;
+    }
 }
 
 .progress-remaining {
@@ -121,5 +171,5 @@
 }
 
 .progress-wrapper--lg .progress-fill {
-    box-shadow: 0 0 10px rgba(13, 242, 108, 0.4);
+    box-shadow: 0 0 15px rgba(13, 242, 108, 0.5);
 }
