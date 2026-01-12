@@ -224,7 +224,7 @@ export const AddMeal: React.FC = () => {
     // Salvar refeição
     const handleSave = async () => {
         console.log('🔵 ========== INÍCIO DO SALVAMENTO ==========');
-        
+
         if (!calculated || nutritionResults.length === 0) {
             setError('Calcule os macros antes de salvar');
             return;
@@ -258,12 +258,12 @@ export const AddMeal: React.FC = () => {
 
             console.log('🔵 Dados a inserir:', JSON.stringify(mealLogs, null, 2));
             console.log('🔵 Iniciando insert...');
-            
+
             const startTime = Date.now();
             const result = await supabase
                 .from('meal_logs')
                 .insert(mealLogs);
-            
+
             const endTime = Date.now();
             console.log(`🔵 Insert levou ${endTime - startTime}ms`);
             console.log('🔵 Resultado completo:', result);
@@ -294,7 +294,7 @@ export const AddMeal: React.FC = () => {
             setError(err.message || 'Erro ao salvar refeição. Verifique sua conexão.');
             setSaving(false);
         }
-        
+
         console.log('🔵 ========== FIM DO SALVAMENTO ==========');
     };
 
@@ -414,10 +414,10 @@ export const AddMeal: React.FC = () => {
                                         <span className="result-item__weight">{item.weightG}g</span>
                                     </div>
                                     <div className="result-item__macros">
-                                        <span>{item.calories} kcal</span>
-                                        <span>P: {item.protein}g</span>
-                                        <span>C: {item.carbs}g</span>
-                                        <span>G: {item.fat}g</span>
+                                        <span>{Math.round(item.calories)} kcal</span>
+                                        <span>P: {Math.round(item.protein)}g</span>
+                                        <span>C: {Math.round(item.carbs)}g</span>
+                                        <span>G: {Math.round(item.fat)}g</span>
                                     </div>
                                 </div>
                             ))}
@@ -426,20 +426,20 @@ export const AddMeal: React.FC = () => {
                         <div className="add-meal__totals">
                             <div className="add-meal__total-row">
                                 <span>Total</span>
-                                <span className="add-meal__total-calories">{totals.calories} kcal</span>
+                                <span className="add-meal__total-calories">{Math.round(totals.calories)} kcal</span>
                             </div>
                             <div className="add-meal__macros-summary">
                                 <div className="macro-badge macro-badge--protein">
                                     <span>Proteínas</span>
-                                    <strong>{totals.protein}g</strong>
+                                    <strong>{Math.round(totals.protein)}g</strong>
                                 </div>
                                 <div className="macro-badge macro-badge--carbs">
                                     <span>Carbos</span>
-                                    <strong>{totals.carbs}g</strong>
+                                    <strong>{Math.round(totals.carbs)}g</strong>
                                 </div>
                                 <div className="macro-badge macro-badge--fat">
                                     <span>Gorduras</span>
-                                    <strong>{totals.fat}g</strong>
+                                    <strong>{Math.round(totals.fat)}g</strong>
                                 </div>
                             </div>
                         </div>
@@ -481,7 +481,7 @@ export const AddMeal: React.FC = () => {
                                     </div>
                                     <div className="add-meal__history-info">
                                         <span className="add-meal__history-name">{food.food_name}</span>
-                                        <span className="add-meal__history-details">{food.calories} kcal • {food.quantity_g}g</span>
+                                        <span className="add-meal__history-details">{Math.round(food.calories)} kcal • {food.quantity_g}g</span>
                                     </div>
                                     <button className="add-meal__history-add">
                                         <span className="material-symbols-outlined">add</span>

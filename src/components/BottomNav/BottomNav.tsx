@@ -47,11 +47,11 @@ export const BottomNav: React.FC<BottomNavProps> = ({ showFab = true, onFabClick
             )}
 
             <button
-                className={`bottom-nav__item ${isActive('/tips') ? 'bottom-nav__item--active' : ''}`}
-                onClick={() => navigate('/tips')}
+                className={`bottom-nav__item ${isActive('/body-analysis') ? 'bottom-nav__item--active' : ''}`}
+                onClick={() => navigate('/body-analysis')}
             >
-                <span className="material-symbols-outlined">insights</span>
-                <span>Dicas IA</span>
+                <span className="material-symbols-outlined">body_system</span>
+                <span>Análise IA</span>
             </button>
 
             <button

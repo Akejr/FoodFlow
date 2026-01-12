@@ -44,7 +44,7 @@
 }
 
 .input--with-icon-left {
-    padding-left: 3rem;
+    padding-left: 4rem !important;
 }
 
 .input--with-icon-right {

@@ -224,15 +224,15 @@ export const Goals: React.FC = () => {
                                 <div className="plan__macros">
                                     <div className="plan__macro">
                                         <span className="plan__macro-label">Proteína</span>
-                                        <span className="plan__macro-value">{plan.protein}g</span>
+                                        <span className="plan__macro-value">{Math.round(plan.protein)}g</span>
                                     </div>
                                     <div className="plan__macro">
                                         <span className="plan__macro-label">Carbo</span>
-                                        <span className="plan__macro-value">{plan.carbs}g</span>
+                                        <span className="plan__macro-value">{Math.round(plan.carbs)}g</span>
                                     </div>
                                     <div className="plan__macro">
                                         <span className="plan__macro-label">Gordura</span>
-                                        <span className="plan__macro-value">{plan.fat}g</span>
+                                        <span className="plan__macro-value">{Math.round(plan.fat)}g</span>
                                     </div>
                                 </div>
                             </label>

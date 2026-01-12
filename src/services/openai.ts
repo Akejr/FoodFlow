@@ -481,4 +481,129 @@ Retorne APENAS JSON:
     }
 }
 
+/**
+ * Analisa foto corporal usando GPT-4 Vision
+ */
+export interface BodyAnalysisData {
+    biotipo: string;
+    areasParaFocar: string[];
+    postura: string;
+    sugestoesTreino: string[];
+    observacoes: string;
+}
 
+export interface BodyAnalysisResult {
+    success: boolean;
+    data?: BodyAnalysisData;
+    error?: string;
+}
+
+export async function analyzeBodyImage(imageBase64: string): Promise<BodyAnalysisResult> {
+    if (!imageBase64) {
+        return {
+            success: false,
+            error: 'Nenhuma imagem fornecida'
+        };
+    }
+
+    const BODY_ANALYSIS_PROMPT = `Você é um especialista em avaliação física e personal trainer experiente.
+
+Analise esta foto corporal e forneça uma avaliação construtiva e motivacional.
+
+### O QUE ANALISAR
+
+1. **Biotipo**: Identifique se é ectomorfo, mesomorfo, endomorfo ou combinações
+2. **Áreas para Focar**: Liste 3-5 grupos musculares que podem ser desenvolvidos
+3. **Postura**: Observe ombros, coluna, quadril - dê feedback construtivo
+4. **Sugestões de Treino**: 3-5 sugestões práticas baseadas na análise
+5. **Observações**: Comentário motivacional geral
+
+### REGRAS
+
+- Seja SEMPRE respeitoso e motivacional
+- NÃO faça comentários negativos sobre peso ou aparência
+- Foque em progresso e potencial
+- Dê sugestões práticas e acionáveis
+- Use linguagem positiva
+- NUNCA sugira dietas extremas ou procedimentos médicos
+
+### FORMATO DE RESPOSTA
+
+Retorne APENAS JSON:
+{
+    "biotipo": "Descrição do biotipo identificado",
+    "areasParaFocar": ["Área 1", "Área 2", "Área 3"],
+    "postura": "Observações sobre postura",
+    "sugestoesTreino": ["Sugestão 1", "Sugestão 2", "Sugestão 3"],
+    "observacoes": "Comentário motivacional final"
+}`;
+
+    try {
+        const response = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                {
+                    role: "user",
+                    content: [
+                        {
+                            type: "text",
+                            text: BODY_ANALYSIS_PROMPT
+                        },
+                        {
+                            type: "image_url",
+                            image_url: {
+                                url: imageBase64,
+                                detail: "high"
+                            }
+                        }
+                    ]
+                }
+            ],
+            temperature: 0.5,
+            max_tokens: 1500,
+        });
+
+        const text = response.choices[0]?.message?.content;
+
+        if (!text) {
+            throw new Error('Resposta vazia da IA');
+        }
+
+        const cleanedText = text
+            .replace(/```json\n?/g, '')
+            .replace(/```\n?/g, '')
+            .trim();
+
+        const result = JSON.parse(cleanedText);
+
+        return {
+            success: true,
+            data: {
+                biotipo: result.biotipo || 'Não identificado',
+                areasParaFocar: result.areasParaFocar || [],
+                postura: result.postura || 'Sem observações',
+                sugestoesTreino: result.sugestoesTreino || [],
+                observacoes: result.observacoes || ''
+            }
+        };
+
+    } catch (error) {
+        console.error('Erro ao analisar imagem corporal:', error);
+
+        let errorMessage = 'Erro ao analisar imagem';
+        if (error instanceof Error) {
+            if (error.message.includes('429')) {
+                errorMessage = 'Limite de requisições. Aguarde e tente novamente.';
+            } else if (error.message.includes('invalid_image')) {
+                errorMessage = 'Imagem inválida. Use uma foto clara do corpo inteiro.';
+            } else {
+                errorMessage = error.message;
+            }
+        }
+
+        return {
+            success: false,
+            error: errorMessage
+        };
+    }
+}

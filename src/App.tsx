@@ -3,6 +3,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PublicRoute } from './components/PublicRoute';
 import { Welcome, Login, Onboarding, Goals, Dashboard, AddMeal, Tips, Profile, Diary } from './pages';
+import { BodyAnalysis } from './pages/BodyAnalysis/BodyAnalysis';
 import './styles/index.css';
 
 function App() {
@@ -51,6 +52,11 @@ function App() {
           <Route path="/diary" element={
             <ProtectedRoute>
               <Diary />
+            </ProtectedRoute>
+          } />
+          <Route path="/body-analysis" element={
+            <ProtectedRoute>
+              <BodyAnalysis />
             </ProtectedRoute>
           } />
           <Route path="/profile" element={

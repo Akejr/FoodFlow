@@ -96,7 +96,7 @@ export const Dashboard = () => {
                         <span className="material-symbols-outlined">auto_awesome</span>
                     </div>
                     <p>
-                        Ótimo progresso! Você já consumiu <strong>{dashboardConsumed.calories} kcal</strong> de {goals.calories} kcal.
+                        Ótimo progresso! Você já consumiu <strong>{Math.round(dashboardConsumed.calories)} kcal</strong> de {Math.round(goals.calories)} kcal.
                         {dashboardConsumed.calories < goals.calories * 0.5 && ' Continue assim!'}
                     </p>
                     <button
@@ -155,24 +155,24 @@ export const Dashboard = () => {
 
                 <div className="dashboard__macros-list">
                     <ProgressBar
-                        value={dashboardConsumed.protein}
-                        max={goals.protein}
+                        value={Math.round(dashboardConsumed.protein)}
+                        max={Math.round(goals.protein)}
                         label="Proteínas"
-                        sublabel={`${Math.max(0, goals.protein - dashboardConsumed.protein)}g restantes`}
+                        sublabel={`${Math.round(Math.max(0, goals.protein - dashboardConsumed.protein))}g restantes`}
                         icon="egg_alt"
                     />
 
                     <ProgressBar
-                        value={dashboardConsumed.carbs}
-                        max={goals.carbs}
+                        value={Math.round(dashboardConsumed.carbs)}
+                        max={Math.round(goals.carbs)}
                         label="Carboidratos"
-                        sublabel={`${Math.max(0, goals.carbs - dashboardConsumed.carbs)}g restantes`}
+                        sublabel={`${Math.round(Math.max(0, goals.carbs - dashboardConsumed.carbs))}g restantes`}
                         icon="bakery_dining"
                     />
 
                     <ProgressBar
-                        value={dashboardConsumed.fat}
-                        max={goals.fat}
+                        value={Math.round(dashboardConsumed.fat)}
+                        max={Math.round(goals.fat)}
                         label="Gorduras"
                         sublabel=""
                         icon="water_drop"
